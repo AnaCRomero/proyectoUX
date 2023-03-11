@@ -28,7 +28,7 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [input, setInput] = useState('22318.60');
+  const [input, setInput] = useState('0');
   const agregarInput = (val:string) => {
     setInput(input + val);
   }
@@ -41,49 +41,59 @@ const App: React.FC = () => {
     <IonApp>
       <IonPage>
         <IonHeader>
-          <IonToolbar>
-          </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
           <div className="App">
             <div className="calculadora">
               <Pantalla input={input}/>
+
+              <div className='especial'>
+              <Boton manejarClic={agregarInput}>MC</Boton>
+              <Boton manejarClic={agregarInput}>MR</Boton>
+              <Boton manejarClic={agregarInput}>M+</Boton>
+              <Boton manejarClic={agregarInput}>M-</Boton>
+              <Boton manejarClic={agregarInput}>MS</Boton>
+              <Boton manejarClic={agregarInput}>M'</Boton>
+              </div>
+
               <div className='fila'>
-              <Boton manejarClic={agregarInput}>1</Boton>
-              <Boton manejarClic={agregarInput}>2</Boton>
-              <Boton manejarClic={agregarInput}>3</Boton>
-              <Boton manejarClic={agregarInput}>+</Boton>
+              <Boton manejarClic={agregarInput}>%</Boton>
+              <Boton manejarClic={agregarInput}>CE</Boton>
+              <Boton manejarClic={agregarInput}>C</Boton>
+              <BotonClear manejarClear={() => setInput('')}> e </BotonClear>
+              </div>
+
+              <div className='fila'>
+                <Boton manejarClic={agregarInput}>1/x</Boton>
+                <Boton manejarClic={agregarInput}>x^2</Boton>
+                <Boton manejarClic={agregarInput}>2√x</Boton>
+                <Boton manejarClic={agregarInput}>÷</Boton>
+              </div>
+              
+              <div className='fila'>
+                <Boton manejarClic={agregarInput}>4</Boton>
+                <Boton manejarClic={agregarInput}>5</Boton>
+                <Boton manejarClic={agregarInput}>6</Boton>
+                <Boton manejarClic={agregarInput}>-</Boton>
+              </div>
+
+              <div className='fila'>
+                <Boton manejarClic={agregarInput}>1</Boton>
+                <Boton manejarClic={agregarInput}>2</Boton>
+                <Boton manejarClic={agregarInput}>3</Boton>
+                <Boton manejarClic={agregarInput}>+</Boton>
+              </div>
+
+              <div className='fila'>
+                <Boton manejarClic={agregarInput}>+/-</Boton>
+                <Boton manejarClic={agregarInput}>0</Boton>
+                <Boton manejarClic={agregarInput}>.</Boton>
+                <Boton className='igual' manejarClic={calcularResultado}>=</Boton>
+              </div>
+            
             </div>
-            <div className='fila'>
-              <Boton manejarClic={agregarInput}>4</Boton>
-              <Boton manejarClic={agregarInput}>5</Boton>
-              <Boton manejarClic={agregarInput}>6</Boton>
-              <Boton manejarClic={agregarInput}>-</Boton>
-            </div>
-            <div className='fila'>
-              <Boton manejarClic={agregarInput}>7</Boton>
-              <Boton manejarClic={agregarInput}>8</Boton>
-              <Boton manejarClic={agregarInput}>9</Boton>
-              <Boton manejarClic={agregarInput}>*</Boton>
-            </div>
-            <div className='fila'>
-              <Boton manejarClic={calcularResultado}>=</Boton>
-              <Boton manejarClic={agregarInput}>0</Boton>
-              <Boton manejarClic={agregarInput}>.</Boton>
-              <Boton manejarClic={agregarInput}>/</Boton>
-            </div>
-            <div className='fila'>
-              <BotonClear manejarClear={() => setInput('')}>
-                Limpiar
-              </BotonClear>
-            </div>
-          </div>
-        </div>
+          </div> 
       </IonContent>
-        <IonFooter className="ion-no-border">
-          <IonToolbar>
-          </IonToolbar>
-      </IonFooter>        
     </IonPage>  
   </IonApp>
   )

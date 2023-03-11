@@ -16,8 +16,6 @@
   height: 600px;
   display: flex;
   flex-direction: column;
-
-
 }
 .fila {
   display: flex;
@@ -30,5 +28,3 @@
   font-size: 1.4rem;  
   width: 100%;
 }
-
-

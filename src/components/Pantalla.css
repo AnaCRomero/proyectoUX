@@ -5,10 +5,19 @@
     align-items: center;
     font-weight: bold;
     font-size: 30px;
-    background-color: #0a0a23;
+    background-color: #272626;
     color: white;
     padding: 11px 30px 11px 11px;
     margin: 1px solid #888;
     flex: 1;
     width: 100%;
+}
+
+.especial{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: lighter;
+    font-size: 1rem;     
 }
