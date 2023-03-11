@@ -12,12 +12,3 @@
     flex: 1;
     width: 100%;
 }
-
-.especial{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: lighter;
-    font-size: 1rem;     
-}

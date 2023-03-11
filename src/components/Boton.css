@@ -1,16 +1,29 @@
 .boton {
-    height: 70px;
+    height: 65px;
     display: flex;
     flex: 1 1;
     justify-content: center;
     align-items: center;
-    font-weight: bold;
+    font-weight: lighter;
     background-color: rgb(12, 12, 12);
     color: white;
     border: 1px solid #333;
     cursor: pointer;
     user-select: none;
 }
+
+.especial{
+    height: 0.1px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    font-weight: lighter;
+    font-size: 1rem;     
+}
+
 .operador{
     background-color: rgb(24, 22, 22);
 }
