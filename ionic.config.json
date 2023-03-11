@@ -1,0 +1,7 @@
+{
+  "name": "proyectoUX",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
