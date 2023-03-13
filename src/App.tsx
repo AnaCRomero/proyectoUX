@@ -4,7 +4,7 @@ import Pantalla from './components/Pantalla';
 import Boton from './components/Boton';
 import BotonClear from './components/BotonClear';
 import {useState} from 'react';
-import {evaluate} from 'mathjs';
+import {evaluate, sqrt} from 'mathjs';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -32,11 +32,49 @@ const App: React.FC = () => {
   const agregarInput = (val:string) => {
     setInput(input + val);
   }
+
+
+  const cambio_signo = () => {
+    const numero_aux = evaluate(input);
+    if (numero_aux > 0) {
+      setInput(`-${numero_aux}`);
+    } else {
+      setInput(`${Math.abs(numero_aux)}`);
+    }
+  }
+
+  const calcular_porcentaje = () => {
+    const numero_aux = evaluate(input);
+    const calc_percentage = numero_aux / 100;
+    setInput(`${calc_percentage}`);
+  }
+
+  const calcular_cuadrado = () => {
+    const numero_aux = evaluate(input);
+    const calc_result = numero_aux ** 2;
+    setInput(`${calc_result}`);
+  }
+
+  const calc_raiz_cuadrada = () => {
+    const numero_aux = evaluate(input);
+    const calc_result = Math.sqrt(numero_aux);
+    setInput(`${calc_result}`);
+  }
+
+  const calc_inversa = () => {
+    const numero_aux = evaluate(input);
+    const calc_result = 1 / numero_aux;
+    setInput(`${calc_result}`);
+  }
+
+  const hacer_backspace = () => {
+    setInput(prev => prev.slice(0, -1));
+  }
+
   const calcularResultado = () => {
     if(input)
     setInput(evaluate(input));
   }
-
   return (
     <IonApp>
       <IonPage>
@@ -58,23 +96,23 @@ const App: React.FC = () => {
 
               <div className='fila'>
               <Boton manejarClic={agregarInput}>%</Boton>
-              <Boton manejarClic={agregarInput}>CE</Boton>
-              <Boton manejarClic={agregarInput}>C</Boton>
-              <BotonClear manejarClear={() => setInput('')}> e </BotonClear>
+              <Boton manejarClic={() => setInput('')}>CE</Boton>
+              <BotonClear manejarClear={() => setInput('')}>C</BotonClear>
+              <BotonClear manejarClear={hacer_backspace}>⌫</BotonClear>
               </div>
 
               <div className='fila'>
-                <Boton manejarClic={agregarInput}>1/x</Boton>
-                <Boton manejarClic={agregarInput}>x^2</Boton>
-                <Boton manejarClic={agregarInput}>2√x</Boton>
-                <Boton manejarClic={agregarInput}>÷</Boton>
+                <Boton manejarClic={calc_inversa}>1/𝒙</Boton>
+                <Boton manejarClic={calcular_cuadrado}>𝒙²</Boton>
+                <Boton manejarClic={calc_raiz_cuadrada}>²√𝒙</Boton>
+                <Boton manejarClic={calcular_porcentaje}>÷</Boton>
               </div>
               
               <div className='fila'>
                 <Boton manejarClic={agregarInput}>7</Boton>
                 <Boton manejarClic={agregarInput}>8</Boton>
                 <Boton manejarClic={agregarInput}>9</Boton>
-                <Boton manejarClic={agregarInput}>x</Boton>
+                <Boton manejarClic={agregarInput}>*</Boton>
               </div>
 
               <div className='fila'>
@@ -92,7 +130,7 @@ const App: React.FC = () => {
               </div>
 
               <div className='fila'>
-                <Boton manejarClic={agregarInput}>+/-</Boton>
+                <Boton manejarClic={cambio_signo}>+/-</Boton>
                 <Boton manejarClic={agregarInput}>0</Boton>
                 <Boton manejarClic={agregarInput}>.</Boton>
                 <Boton className='igual' manejarClic={calcularResultado}>=</Boton>

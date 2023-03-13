@@ -10,6 +10,7 @@
     border: 1px solid #333;
     cursor: pointer;
     user-select: none;
+    border-radius: 5px;
 }
 
 .especial{
@@ -21,7 +22,7 @@
     text-align: center;
     color: #fff;
     font-weight: lighter;
-    font-size: 1rem;     
+    font-size: 12px;     
 }
 
 .operador{
