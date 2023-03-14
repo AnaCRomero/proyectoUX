@@ -3,6 +3,7 @@ import './App.css';
 import Pantalla from './components/Pantalla';
 import Boton from './components/Boton';
 import BotonClear from './components/BotonClear';
+import Memoria from './components/Memoria';
 import {useState} from 'react';
 import {evaluate, sqrt} from 'mathjs';
 
@@ -24,6 +25,8 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import BotonIgual from './components/BotonIgual';
+
 
 setupIonicReact();
 
@@ -83,15 +86,18 @@ const App: React.FC = () => {
         <IonContent fullscreen>
           <div className="App">
             <div className="calculadora">
+            <div className='fila'>
+              <Memoria manejarClic={agregarInput}>Abt</Memoria>
+              <Memoria manejarClic={agregarInput}>His</Memoria>
+              </div>
               <Pantalla input={input}/>
-
-              <div className='especial'>
-              <Boton manejarClic={agregarInput}>MC</Boton>
-              <Boton manejarClic={agregarInput}>MR</Boton>
-              <Boton manejarClic={agregarInput}>M+</Boton>
-              <Boton manejarClic={agregarInput}>M-</Boton>
-              <Boton manejarClic={agregarInput}>MS</Boton>
-              <Boton manejarClic={agregarInput}>M'</Boton>
+              <div className='fila'>
+              <Memoria manejarClic={agregarInput}>MC</Memoria>
+              <Memoria manejarClic={agregarInput}>MR</Memoria>
+              <Memoria manejarClic={agregarInput}>M+</Memoria>
+              <Memoria manejarClic={agregarInput}>M-</Memoria>
+              <Memoria manejarClic={agregarInput}>MS</Memoria>
+              <Memoria manejarClic={agregarInput}>M'</Memoria>
               </div>
 
               <div className='fila'>
@@ -133,7 +139,7 @@ const App: React.FC = () => {
                 <Boton manejarClic={cambio_signo}>+/-</Boton>
                 <Boton manejarClic={agregarInput}>0</Boton>
                 <Boton manejarClic={agregarInput}>.</Boton>
-                <Boton className='igual' manejarClic={calcularResultado}>=</Boton>
+                <BotonIgual manejarClic={calcularResultado}>=</BotonIgual>
               </div>
             
             </div>

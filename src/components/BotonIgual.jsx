@@ -1,12 +1,12 @@
-import './Boton.css';
+import './BotonIgual.css';
 
-function Boton(props) {
-    function esOperador() {
+function BotonIgual(props) {
+    function esigual() {
         const valor = props.children;
-        return isNaN(valor) && (valor !== '.') && (valor !== '+/-');
+        return (valor === '=');
     }
     return (
-        <div className={`boton ${esOperador() ? 'operador' : ''}`}
+        <div className={`botonigual ${esigual() ? 'igual' : ''}`}
             //onClick={props.manejarClic(props.children)}
             onClick={() => props.manejarClic(props.children)}>
             {props.children}
@@ -14,4 +14,4 @@ function Boton(props) {
     )
 }
 
-export default Boton;
+export default BotonIgual;

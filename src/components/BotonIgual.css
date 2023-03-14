@@ -1,28 +1,26 @@
-.boton {
+.botonigual {
     height: 65px;
     display: flex;
     flex: 1 1;
     justify-content: center;
     align-items: center;
     font-weight: lighter;
-    background-color: rgb(12, 12, 12);
+    background-color:#134369;
     color: white;
     border: 1px solid #333;
     cursor: pointer;
     user-select: none;
     border-radius: 5px;
+    font-size: 14px;
 }
 
 
 
-.operador{
-    background-color: rgb(24, 22, 22);
+.igual{
+    background-color:#134369;
 }
-.boton:hover {
-    background-color: #333;
-    border: 0.2px solid #373535;
-}
-.operador:hover {
-    background-color: rgb(12, 12, 12) !important;
+
+.igual:hover {
+    background-color: #12527c!important;
     border-color:0.2px solid #1c1c1c !important;
 }
