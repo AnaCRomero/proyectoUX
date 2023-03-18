@@ -1,11 +1,16 @@
-import { IonApp, setupIonicReact, IonContent, IonHeader, IonPage, IonTitle, IonFooter, IonToolbar} from '@ionic/react';
+import { IonApp, setupIonicReact, IonContent, IonHeader, IonPage, IonTitle, IonFooter, IonToolbar, IonModal, IonButtons, IonButton, IonList, IonItem, IonLabel, IonIcon } from '@ionic/react';
 import './App.css';
 import Pantalla from './components/Pantalla';
 import Boton from './components/Boton';
 import BotonClear from './components/BotonClear';
 import Memoria from './components/Memoria';
-import {useState} from 'react';
-import {evaluate, sqrt} from 'mathjs';
+import { useState, useRef, useEffect } from 'react';
+import { evaluate, sqrt } from 'mathjs';
+
+/* para los iconos */
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faClockRotateLeft} from '@fortawesome/free-solid-svg-icons'
+import {faAddressCard} from '@fortawesome/free-solid-svg-icons'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -32,7 +37,7 @@ setupIonicReact();
 
 const App: React.FC = () => {
   const [input, setInput] = useState('0');
-  const agregarInput = (val:string) => {
+  const agregarInput = (val: string) => {
     setInput(input + val);
   }
 
@@ -75,8 +80,20 @@ const App: React.FC = () => {
   }
 
   const calcularResultado = () => {
-    if(input)
-    setInput(evaluate(input));
+    if (input)
+      setInput(evaluate(input));
+  }
+  const modal = useRef<HTMLIonModalElement>(null);
+  const page = useRef(null);
+
+  const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setPresentingElement(page.current);
+  }, []);
+
+  function dismiss() {
+    modal.current?.dismiss();
   }
   return (
     <IonApp>
@@ -84,27 +101,73 @@ const App: React.FC = () => {
         <IonHeader>
         </IonHeader>
         <IonContent fullscreen>
+          <IonModal id='historial' ref={modal} trigger="open-modal" initialBreakpoint={0.75} presentingElement={presentingElement!}>
+            <IonHeader >
+              <IonToolbar color="#1f1f1">
+                <IonTitle >Historial</IonTitle>
+                <IonButtons slot="end">
+                  <IonButton onClick={() => dismiss()}>Cerrar</IonButton>
+                </IonButtons>
+              </IonToolbar>
+            </IonHeader>
+            <IonContent color="#1f1f1">
+              <IonList>
+                <IonItem>
+                  <IonLabel> <h2>x</h2> <p>y</p></IonLabel>
+                </IonItem>
+              </IonList>
+            </IonContent>
+          </IonModal>
+          <IonModal id='Memoria' ref={modal} trigger="open-memoria" initialBreakpoint={0.75} presentingElement={presentingElement!}>
+            <IonHeader >
+              <IonToolbar color="#1f1f1">
+                <IonTitle> Memoria</IonTitle>
+                <IonButtons slot="end">
+                  <IonButton onClick={() => dismiss()}>Cerrar</IonButton>
+                </IonButtons>
+              </IonToolbar>
+            </IonHeader>
+            <IonContent color="#1f1f1">
+              <IonList>
+                <IonItem>
+                  <IonLabel>
+                    <h2>x</h2>
+                    <p>y</p>
+                  </IonLabel>
+                </IonItem>
+              </IonList>
+            </IonContent>
+          </IonModal>
           <div className="App">
             <div className="calculadora">
-            <div className='fila'>
-              <Memoria manejarClic={agregarInput}>Abt</Memoria>
-              <Memoria manejarClic={agregarInput}>His</Memoria>
-              </div>
-              <Pantalla input={input}/>
               <div className='fila'>
-              <Memoria manejarClic={agregarInput}>MC</Memoria>
-              <Memoria manejarClic={agregarInput}>MR</Memoria>
-              <Memoria manejarClic={agregarInput}>M+</Memoria>
-              <Memoria manejarClic={agregarInput}>M-</Memoria>
-              <Memoria manejarClic={agregarInput}>MS</Memoria>
-              <Memoria manejarClic={agregarInput}>M'</Memoria>
+                <Memoria manejarClic={agregarInput}>
+                  <FontAwesomeIcon icon={faAddressCard} size = "xl"/>
+                </Memoria>
+            
+                <IonButton color="#1F1F1F" id="open-modal" expand="block">
+                  <FontAwesomeIcon icon={faClockRotateLeft} size = "lg"/>
+                <IonIcon name="time" ></IonIcon> </IonButton>
+
+              </div>
+              <Pantalla input={input} />
+              <div className='fila'>
+                <Memoria manejarClic={agregarInput}>MC</Memoria>
+                <Memoria manejarClic={agregarInput}>MR</Memoria>
+                <Memoria manejarClic={agregarInput}>M+</Memoria>
+                <Memoria manejarClic={agregarInput}>M-</Memoria>
+                <Memoria manejarClic={agregarInput}>MS</Memoria>
+                <IonButton color="#1c1c1c" id="open-memoria" expand="block">
+                  M↓
+
+                </IonButton>
               </div>
 
               <div className='fila'>
-              <Boton manejarClic={agregarInput}>%</Boton>
-              <Boton manejarClic={() => setInput('')}>CE</Boton>
-              <BotonClear manejarClear={() => setInput('')}>C</BotonClear>
-              <BotonClear manejarClear={hacer_backspace}>⌫</BotonClear>
+                <Boton manejarClic={agregarInput}>%</Boton>
+                <Boton manejarClic={() => setInput('')}>CE</Boton>
+                <BotonClear manejarClear={() => setInput('')}>C</BotonClear>
+                <BotonClear manejarClear={hacer_backspace}>⌫</BotonClear>
               </div>
 
               <div className='fila'>
@@ -113,7 +176,7 @@ const App: React.FC = () => {
                 <Boton manejarClic={calc_raiz_cuadrada}>²√𝒙</Boton>
                 <Boton manejarClic={calcular_porcentaje}>÷</Boton>
               </div>
-              
+
               <div className='fila'>
                 <Boton manejarClic={agregarInput}>7</Boton>
                 <Boton manejarClic={agregarInput}>8</Boton>
@@ -141,12 +204,12 @@ const App: React.FC = () => {
                 <Boton manejarClic={agregarInput}>.</Boton>
                 <BotonIgual manejarClic={calcularResultado}>=</BotonIgual>
               </div>
-            
+
             </div>
-          </div> 
-      </IonContent>
-    </IonPage>  
-  </IonApp>
+          </div>
+        </IonContent>
+      </IonPage>
+    </IonApp>
   )
-  };
+};
 export default App;
