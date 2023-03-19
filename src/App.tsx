@@ -83,6 +83,9 @@ const App: React.FC = () => {
     if (input)
       setInput(evaluate(input));
   }
+
+
+
   const modal = useRef<HTMLIonModalElement>(null);
   const page = useRef(null);
 
@@ -92,21 +95,27 @@ const App: React.FC = () => {
     setPresentingElement(page.current);
   }, []);
 
-  function dismiss() {
+  function cerrar_pagina() {
     modal.current?.dismiss();
   }
+
+  function cerrar_pagina1() {
+    modal.current?.dismiss();
+  }
+
+  
   return (
     <IonApp>
       <IonPage>
         <IonHeader>
         </IonHeader>
         <IonContent fullscreen>
-          <IonModal id='historial' ref={modal} trigger="open-modal" initialBreakpoint={0.75} presentingElement={presentingElement!}>
+          <IonModal id='historial' ref={modal} trigger="open-modal" initialBreakpoint={0.55} presentingElement={presentingElement!}>
             <IonHeader >
               <IonToolbar color="#1f1f1">
-                <IonTitle >Historial</IonTitle>
+                <IonTitle >Historial Calculadora</IonTitle>
                 <IonButtons slot="end">
-                  <IonButton onClick={() => dismiss()}>Cerrar</IonButton>
+                  <IonButton color = "danger" onClick={() => cerrar_pagina1()}>X</IonButton>
                 </IonButtons>
               </IonToolbar>
             </IonHeader>
@@ -118,12 +127,12 @@ const App: React.FC = () => {
               </IonList>
             </IonContent>
           </IonModal>
-          <IonModal id='Memoria' ref={modal} trigger="open-memoria" initialBreakpoint={0.75} presentingElement={presentingElement!}>
+          <IonModal id='Memoria' ref={modal} trigger="open-memoria" initialBreakpoint={0.55} presentingElement={presentingElement!}>
             <IonHeader >
               <IonToolbar color="#1f1f1">
-                <IonTitle> Memoria</IonTitle>
+                <IonTitle> Memoria Calculadora</IonTitle>
                 <IonButtons slot="end">
-                  <IonButton onClick={() => dismiss()}>Cerrar</IonButton>
+                  <IonButton color = "danger" onClick={() => cerrar_pagina()}>X</IonButton>
                 </IonButtons>
               </IonToolbar>
             </IonHeader>
@@ -141,9 +150,13 @@ const App: React.FC = () => {
           <div className="App">
             <div className="calculadora">
               <div className='fila'>
-                <Memoria manejarClic={agregarInput}>
-                  <FontAwesomeIcon icon={faAddressCard} size = "xl"/>
-                </Memoria>
+
+
+              <IonButton color="#1F1F1F" id="open-person" expand="block">
+              <FontAwesomeIcon icon={faAddressCard} size = "lg"/>
+                <IonIcon name="person" ></IonIcon> </IonButton>
+
+                
             
                 <IonButton color="#1F1F1F" id="open-modal" expand="block">
                   <FontAwesomeIcon icon={faClockRotateLeft} size = "lg"/>
