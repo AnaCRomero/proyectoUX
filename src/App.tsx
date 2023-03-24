@@ -4,8 +4,11 @@ import Pantalla from './components/Pantalla';
 import Boton from './components/Boton';
 import BotonClear from './components/BotonClear';
 import Memoria from './components/Memoria';
+
 import { useState, useRef, useEffect } from 'react';
 import { evaluate, sqrt } from 'mathjs';
+
+
 
 /* para los iconos */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -33,13 +36,31 @@ import './theme/variables.css';
 import BotonIgual from './components/BotonIgual';
 
 
+
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [input, setInput] = useState('0');
+
+
+  const [input, setInput] = useState('');
+  const [memory, setMemory] = useState(0);
   const agregarInput = (val: string) => {
     setInput(input + val);
   }
+
+
+
+  const MemoryAdd = () => {
+    setMemory(memory + memory);
+  }
+
+  const MemorySubtract = () => {
+    setMemory(memory - memory);
+  }
+
+  const MemoryClear = () => {
+    setMemory(0);
+  }  
 
 
   const cambio_signo = () => {
@@ -56,6 +77,7 @@ const App: React.FC = () => {
     const calc_percentage = numero_aux / 100;
     setInput(`${calc_percentage}`);
   }
+
 
   const calcular_cuadrado = () => {
     const numero_aux = evaluate(input);
@@ -79,12 +101,24 @@ const App: React.FC = () => {
     setInput(prev => prev.slice(0, -1));
   }
 
-  const calcularResultado = () => {
-    if (input)
-      setInput(evaluate(input));
+
+
+  const calcularResultado = (valor_aux: string) => {
+    if (input) {
+      valor_aux = input;
+      if (input.includes("÷")) {
+        valor_aux = valor_aux.replace("÷", "/")
+        setInput(valor_aux);
+      }
+
+      if (input.includes("×")) {
+        valor_aux = valor_aux.replace("×", "*")
+        setInput(valor_aux);
+      }
+
+      setInput(evaluate(valor_aux));
+    }
   }
-
-
 
   const modal = useRef<HTMLIonModalElement>(null);
   const page = useRef(null);
@@ -95,14 +129,10 @@ const App: React.FC = () => {
     setPresentingElement(page.current);
   }, []);
 
-  function cerrar_pagina() {
-    modal.current?.dismiss();
-  }
 
-  function cerrar_pagina1() {
-    modal.current?.dismiss();
-  }
 
+
+  
   
   return (
     <IonApp>
@@ -111,7 +141,7 @@ const App: React.FC = () => {
         </IonHeader>
         <IonContent fullscreen>
           
-          <IonModal id='about' ref={modal} trigger="open-about" initialBreakpoint={0.55} presentingElement={presentingElement!}>
+          <IonModal ref={modal} trigger="open-about" initialBreakpoint={0.55} presentingElement={presentingElement!}>
             <IonHeader >
               <IonToolbar color="#1f1f1">
                 <IonTitle >About</IonTitle>
@@ -122,7 +152,9 @@ const App: React.FC = () => {
                 <IonItem>
                   <IonLabel>
                             <h1>Proyecto de UX</h1>   
-                            <p>Hecho por Ana Romero y Victor Cruz</p>  
+                            <h2>Hecho por Ana Romero y Victor Cruz</h2>
+                            <p>26-03-2023</p> 
+                             
                   </IonLabel>
                 </IonItem>
               </IonList>
@@ -130,7 +162,7 @@ const App: React.FC = () => {
           </IonModal>
 
 
-          <IonModal id='historial' ref={modal} trigger="open-historial" initialBreakpoint={0.55} presentingElement={presentingElement!}>
+        <IonModal ref={modal} trigger="open-historial" initialBreakpoint={0.55} presentingElement={presentingElement!}>
             <IonHeader >
               <IonToolbar color="#1f1f1">
                 <IonTitle >Historial Calculadora</IonTitle>
@@ -145,7 +177,7 @@ const App: React.FC = () => {
             </IonContent>
           </IonModal>
 
-          <IonModal id='memoria' ref={modal} trigger="open-memoria" initialBreakpoint={0.55} presentingElement={presentingElement!}>
+          <IonModal  ref={modal} trigger="open-memoria" initialBreakpoint={0.55} presentingElement={presentingElement!}>
             <IonHeader >
               <IonToolbar color="#1f1f1">
                 <IonTitle> Memoria Calculadora</IonTitle>
@@ -168,23 +200,24 @@ const App: React.FC = () => {
             <div className="calculadora">
               <div id = "botones_arriba" className='fila'>
 
-              <div id="about" ><IonButton color="#1F1F1F" id="about" expand="full">
+              <div id="about" >
+                <IonButton  id = "open-about" color="#1F1F1F" expand="block">
               <FontAwesomeIcon icon={faAddressCard} size = "lg"/>
                 <IonIcon name="person" ></IonIcon> </IonButton>
               </div>
             
                 <div id="historial">
-                <IonButton color="#1F1F1F" expand="full">
+                <IonButton id = "open-historial" color="#1F1F1F" expand="block">
                   <FontAwesomeIcon icon={faClockRotateLeft} size = "lg"/>
                 <IonIcon name="time" ></IonIcon> </IonButton>
                 </div>
               </div>
               <Pantalla input={input} />
               <div className='fila'>
-                <Memoria manejarClic={agregarInput}>MC</Memoria>
+                <Memoria manejarClic={MemoryClear}>MC</Memoria>
                 <Memoria manejarClic={agregarInput}>MR</Memoria>
-                <Memoria manejarClic={agregarInput}>M+</Memoria>
-                <Memoria manejarClic={agregarInput}>M-</Memoria>
+                <Memoria manejarClic={MemoryAdd}>M+</Memoria>
+                <Memoria manejarClic={MemorySubtract}>M-</Memoria>
                 <Memoria manejarClic={agregarInput}>MS</Memoria>
                 <IonButton color="#1c1c1c" id="open-memoria"  expand="block">
                   M↓
@@ -193,7 +226,7 @@ const App: React.FC = () => {
               </div>
 
               <div className='fila'>
-                <Boton manejarClic={agregarInput}>%</Boton>
+                <Boton manejarClic={calcular_porcentaje}>%</Boton>
                 <Boton manejarClic={() => setInput('')}>CE</Boton>
                 <BotonClear manejarClear={() => setInput('')}>C</BotonClear>
                 <BotonClear manejarClear={hacer_backspace}>⌫</BotonClear>
@@ -203,14 +236,14 @@ const App: React.FC = () => {
                 <Boton manejarClic={calc_inversa}>1/𝒙</Boton>
                 <Boton manejarClic={calcular_cuadrado}>𝒙²</Boton>
                 <Boton manejarClic={calc_raiz_cuadrada}>²√𝒙</Boton>
-                <Boton manejarClic={calcular_porcentaje}>÷</Boton>
+                <Boton manejarClic={agregarInput}>÷</Boton>
               </div>
 
               <div className='fila'>
                 <Boton manejarClic={agregarInput}>7</Boton>
                 <Boton manejarClic={agregarInput}>8</Boton>
                 <Boton manejarClic={agregarInput}>9</Boton>
-                <Boton manejarClic={agregarInput}>*</Boton>
+                <Boton manejarClic={agregarInput}>×</Boton>
               </div>
 
               <div className='fila'>
