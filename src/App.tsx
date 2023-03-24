@@ -187,6 +187,10 @@ const App: React.FC = () => {
     setButtonEnabled(false);
   }
 
+  const clearHist = ()  => {
+    setHistorial([]);
+  } 
+
 
   return (
     <IonApp>
@@ -229,6 +233,7 @@ const App: React.FC = () => {
               <IonToolbar color="#1f1f1">
                 <IonTitle >Historial Calculadora</IonTitle>
                 <IonButton slot="end" onClick={handleCloseModal2}>X</IonButton>
+                <IonButton slot="end" onClick={clearHist}>GB</IonButton>
               </IonToolbar>
             </IonHeader>
             <IonContent color="#1f1f1">
@@ -247,7 +252,13 @@ const App: React.FC = () => {
                   }
                   return null;
                 })}
-              </IonList>
+             
+              <IonItem>
+                  <IonLabel>
+                   
+                  </IonLabel>
+                </IonItem>
+                </IonList>
             </IonContent>
           </IonModal>
 
