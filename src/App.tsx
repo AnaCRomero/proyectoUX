@@ -12,8 +12,8 @@ import { evaluate, sqrt } from 'mathjs';
 
 /* para los iconos */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faClockRotateLeft} from '@fortawesome/free-solid-svg-icons'
-import {faAddressCard} from '@fortawesome/free-solid-svg-icons'
+import { faClockRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faAddressCard } from '@fortawesome/free-solid-svg-icons'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -60,7 +60,7 @@ const App: React.FC = () => {
 
   const MemoryClear = () => {
     setMemory(0);
-  }  
+  }
 
 
   const cambio_signo = () => {
@@ -121,6 +121,8 @@ const App: React.FC = () => {
   }
 
   const modal = useRef<HTMLIonModalElement>(null);
+  const modal1 = useRef<HTMLIonModalElement>(null);
+  const modal2 = useRef<HTMLIonModalElement>(null);
   const page = useRef(null);
 
   const [presentingElement, setPresentingElement] = useState<HTMLElement | null>(null);
@@ -130,31 +132,43 @@ const App: React.FC = () => {
   }, []);
 
 
+  const handleCloseModal1 = () => {
+    modal.current?.dismiss();
+  };
+
+  const handleCloseModal2 = () => {
+    modal1.current?.dismiss();
+  };
 
 
-  
-  
+  const handleCloseModal3 = () => {
+    modal2.current?.dismiss();
+  };
+
+
+
   return (
     <IonApp>
       <IonPage>
         <IonHeader>
         </IonHeader>
         <IonContent fullscreen>
-          
-          <IonModal ref={modal} trigger="open-about" initialBreakpoint={0.55} presentingElement={presentingElement!}>
+
+          <IonModal ref={modal} trigger="open-about" initialBreakpoint={0.75} presentingElement={presentingElement!}>
             <IonHeader >
               <IonToolbar color="#1f1f1">
                 <IonTitle >About</IonTitle>
+                <IonButton slot="end" onClick={handleCloseModal1}>X</IonButton>
               </IonToolbar>
             </IonHeader>
             <IonContent color="#1f1f1">
               <IonList>
                 <IonItem>
                   <IonLabel>
-                            <h1>Proyecto de UX</h1>   
-                            <h2>Hecho por Ana Romero y Victor Cruz</h2>
-                            <p>26-03-2023</p> 
-                             
+                    <h1>Proyecto de UX</h1>
+                    <h2>Hecho por Ana Romero y Victor Cruz</h2>
+                    <p>26-03-2023</p>
+
                   </IonLabel>
                 </IonItem>
               </IonList>
@@ -162,10 +176,11 @@ const App: React.FC = () => {
           </IonModal>
 
 
-        <IonModal ref={modal} trigger="open-historial" initialBreakpoint={0.55} presentingElement={presentingElement!}>
+          <IonModal ref={modal1} trigger="open-historial" initialBreakpoint={0.75} presentingElement={presentingElement!}>
             <IonHeader >
               <IonToolbar color="#1f1f1">
                 <IonTitle >Historial Calculadora</IonTitle>
+                <IonButton slot="end" onClick={handleCloseModal2}>X</IonButton>
               </IonToolbar>
             </IonHeader>
             <IonContent color="#1f1f1">
@@ -177,10 +192,11 @@ const App: React.FC = () => {
             </IonContent>
           </IonModal>
 
-          <IonModal  ref={modal} trigger="open-memoria" initialBreakpoint={0.55} presentingElement={presentingElement!}>
+          <IonModal ref={modal2} trigger="open-memoria" initialBreakpoint={0.75} presentingElement={presentingElement!}>
             <IonHeader >
               <IonToolbar color="#1f1f1">
                 <IonTitle> Memoria Calculadora</IonTitle>
+                <IonButton slot="end" onClick={handleCloseModal3}>X</IonButton>
               </IonToolbar>
             </IonHeader>
             <IonContent color="#1f1f1">
@@ -192,24 +208,25 @@ const App: React.FC = () => {
                   </IonLabel>
                 </IonItem>
               </IonList>
+
             </IonContent>
           </IonModal>
 
 
           <div className="App">
             <div className="calculadora">
-              <div id = "botones_arriba" className='fila'>
+              <div id="botones_arriba" className='fila'>
 
-              <div id="about" >
-                <IonButton  id = "open-about" color="#1F1F1F" expand="block">
-              <FontAwesomeIcon icon={faAddressCard} size = "lg"/>
-                <IonIcon name="person" ></IonIcon> </IonButton>
-              </div>
-            
+                <div id="about" >
+                  <IonButton id="open-about" color="#1F1F1F" expand="block">
+                    <FontAwesomeIcon icon={faAddressCard} size="lg" />
+                    <IonIcon name="person" ></IonIcon> </IonButton>
+                </div>
+
                 <div id="historial">
-                <IonButton id = "open-historial" color="#1F1F1F" expand="block">
-                  <FontAwesomeIcon icon={faClockRotateLeft} size = "lg"/>
-                <IonIcon name="time" ></IonIcon> </IonButton>
+                  <IonButton id="open-historial" color="#1F1F1F" expand="block">
+                    <FontAwesomeIcon icon={faClockRotateLeft} size="lg" />
+                    <IonIcon name="time" ></IonIcon> </IonButton>
                 </div>
               </div>
               <Pantalla input={input} />
@@ -219,7 +236,7 @@ const App: React.FC = () => {
                 <Memoria manejarClic={MemoryAdd}>M+</Memoria>
                 <Memoria manejarClic={MemorySubtract}>M-</Memoria>
                 <Memoria manejarClic={agregarInput}>MS</Memoria>
-                <IonButton color="#1c1c1c" id="open-memoria"  expand="block">
+                <IonButton color="#1c1c1c" id="open-memoria" expand="block">
                   M↓
 
                 </IonButton>
