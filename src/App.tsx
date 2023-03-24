@@ -47,6 +47,10 @@ const App: React.FC = () => {
 
   const [input, setInput] = useState('');
   const [memory, setMemory] = useState(0);
+  const [historial, setHistorial] = useState<string[]>([]);
+
+  
+  const [buttonEnabled, setButtonEnabled] = useState(false);
   const agregarInput = (val: string) => {
     setInput(input + val);
   }
@@ -65,6 +69,9 @@ const App: React.FC = () => {
     setMemory(0);
   }
 
+  const addToHistorial = (valor: string) => {
+    setHistorial(prevHistorial => [...prevHistorial, valor]);
+  }
 
   const cambio_signo = () => {
     const numero_aux = evaluate(input);
@@ -78,26 +85,38 @@ const App: React.FC = () => {
   const calcular_porcentaje = () => {
     const numero_aux = evaluate(input);
     const calc_percentage = numero_aux / 100;
+    const string_aux = calc_percentage.toString();
     setInput(`${calc_percentage}`);
+    addToHistorial(input);
+    addToHistorial(string_aux);
   }
 
 
   const calcular_cuadrado = () => {
     const numero_aux = evaluate(input);
     const calc_result = numero_aux ** 2;
-    setInput(`${calc_result}`);
+    const string_aux = calc_result.toString();
+    setInput(`${calc_result} `);
+    addToHistorial(input);
+    addToHistorial(string_aux);
   }
 
   const calc_raiz_cuadrada = () => {
     const numero_aux = evaluate(input);
     const calc_result = Math.sqrt(numero_aux);
-    setInput(`${calc_result}`);
+    const string_aux = calc_result.toString();
+    setInput(`${calc_result} `);
+    addToHistorial(input);
+    addToHistorial(string_aux);
   }
 
   const calc_inversa = () => {
     const numero_aux = evaluate(input);
     const calc_result = 1 / numero_aux;
-    setInput(`${calc_result}`);
+    const string_aux = calc_result.toString();
+    setInput(`${calc_result} `);
+    addToHistorial(input);
+    addToHistorial(string_aux);
   }
 
   const hacer_backspace = () => {
@@ -119,7 +138,19 @@ const App: React.FC = () => {
         setInput(valor_aux);
       }
 
+      if (input.includes("+")) {
+      
+        setInput(valor_aux);
+      }
+
+      if (input.includes("-")) {
+       
+        setInput(valor_aux);
+      }
+
       setInput(evaluate(valor_aux));
+      addToHistorial(input);
+      addToHistorial(evaluate(valor_aux));
     }
   }
 
@@ -148,6 +179,13 @@ const App: React.FC = () => {
     modal2.current?.dismiss();
   };
 
+  const handleClick = () => {
+    setButtonEnabled(true);
+  };
+
+  const handleClick1 = () => {
+    setButtonEnabled(false);
+  }
 
 
   return (
@@ -194,10 +232,21 @@ const App: React.FC = () => {
               </IonToolbar>
             </IonHeader>
             <IonContent color="#1f1f1">
-              <IonList>
-                <IonItem>
-                  <IonLabel> <h2>x</h2> <p>y</p></IonLabel>
-                </IonItem>
+            <IonList>
+                {historial.map((item, index) => {
+                  if (index % 2 === 0) {
+                    const nextItem = historial[index + 1];
+                    return (
+                      <IonItem key={index}>
+                        <IonLabel>
+                          <p>{`${item} = `}</p>
+                          <h2>{nextItem}</h2>
+                        </IonLabel>
+                      </IonItem>
+                    );
+                  }
+                  return null;
+                })}
               </IonList>
             </IonContent>
           </IonModal>
@@ -241,15 +290,12 @@ const App: React.FC = () => {
               </div>
               <Pantalla input={input} />
               <div className='fila'>
-                <Memoria manejarClic={MemoryClear}>MC</Memoria>
-                <Memoria manejarClic={agregarInput}>MR</Memoria>
-                <Memoria manejarClic={MemoryAdd}>M+</Memoria>
-                <Memoria manejarClic={MemorySubtract}>M-</Memoria>
-                <Memoria manejarClic={agregarInput}>MS</Memoria>
-                <IonButton color="#1c1c1c" id="open-memoria" expand="block">
-                  M↓
-
-                </IonButton>
+              <IonButton  disabled={!buttonEnabled} onClick={handleClick1} color="#1c1c1c" >MC</IonButton>
+                <IonButton  disabled={!buttonEnabled}  color="#1c1c1c" >MR</IonButton>
+                <IonButton color="#1c1c1c" >M+</IonButton>
+                <IonButton color="#1c1c1c" >M-</IonButton>
+                <IonButton color="#1c1c1c" onClick={handleClick} >MS</IonButton>
+                <IonButton  disabled={!buttonEnabled}  color="#1c1c1c" id="open-memoria" expand="block">M↓</IonButton>
               </div>
 
               <div className='fila'>
