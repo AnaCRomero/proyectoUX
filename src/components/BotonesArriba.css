@@ -1,5 +1,5 @@
 .person{
-   
+
   align-items: left;
   justify-content: left;
   background-color: rgb(24, 24, 24);
@@ -11,7 +11,6 @@
 }
 
 .historial{
-   
   align-items: right;
   justify-content: right;
   background-color: rgb(24, 24, 24);

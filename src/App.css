@@ -84,3 +84,29 @@ ion-modal::part(backdrop) {
   background: rgb(173, 174, 175);
   opacity: 0.5;
 }
+
+#container{
+  display: block;
+  padding-bottom: 15px;
+}
+
+#titulo1{
+  display: inline-block;
+  width: 50%;
+  vertical-align: top;
+  font-family: consolas;
+  font-weight: lighter;
+  font-size: 22px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 15px;
+  color: rgb(210, 232, 232);
+}
+
+#titulo2{
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: lighter;
+  font-size: 15px;
+  color: rgb(174, 194, 194);
+  padding-bottom: 15px;
+}

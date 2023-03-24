@@ -14,6 +14,9 @@ import { evaluate, sqrt } from 'mathjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClockRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons'
+import { faBook} from '@fortawesome/free-solid-svg-icons'
+import { faChild } from '@fortawesome/free-solid-svg-icons'
+import { faPersonDress} from '@fortawesome/free-solid-svg-icons'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -165,10 +168,17 @@ const App: React.FC = () => {
               <IonList>
                 <IonItem>
                   <IonLabel>
-                    <h1>Proyecto de UX</h1>
-                    <h2>Hecho por Ana Romero y Victor Cruz</h2>
-                    <p>26-03-2023</p>
-
+                  <div id="container">
+                    <FontAwesomeIcon icon={faBook} />
+                    <p id="titulo1">Proyecto de UX</p>
+                    <FontAwesomeIcon icon={faBook} />
+                    <p id="titulo2">Elaborado por:</p>
+                    <FontAwesomeIcon icon={faPersonDress} />
+                    <p id="titulo2">Ana Romero - 11941043</p>
+                    <FontAwesomeIcon icon={faChild} />
+                    <p id="titulo2">Victor Cruz - 12011231</p> 
+                  </div>
+                  <p>Creado el 26-03-2023</p>
                   </IonLabel>
                 </IonItem>
               </IonList>
