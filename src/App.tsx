@@ -46,28 +46,18 @@ const App: React.FC = () => {
 
 
   const [input, setInput] = useState('');
-  const [memory, setMemory] = useState(0);
   const [historial, setHistorial] = useState<string[]>([]);
-
-  
+  const [memoria, setMemoria] = useState<number[]>([]);
   const [buttonEnabled, setButtonEnabled] = useState(false);
+
+
   const agregarInput = (val: string) => {
     setInput(input + val);
   }
 
 
 
-  const MemoryAdd = () => {
-    setMemory(memory + memory);
-  }
 
-  const MemorySubtract = () => {
-    setMemory(memory - memory);
-  }
-
-  const MemoryClear = () => {
-    setMemory(0);
-  }
 
   const addToHistorial = (valor: string) => {
     setHistorial(prevHistorial => [...prevHistorial, valor]);
@@ -81,6 +71,21 @@ const App: React.FC = () => {
       setInput(`${Math.abs(numero_aux)}`);
     }
   }
+
+  const memory_recall = () => {
+    const index = memoria.length - 1;
+    if (memoria.length === 0 || index < 0 || index >= memoria.length) {
+      setInput('0');
+    } else {
+      setInput(memoria[index].toString());
+    }
+  };
+
+
+  const clearMemory = () => {
+    setMemoria([]);
+  }
+
 
   const calcular_porcentaje = () => {
     const numero_aux = evaluate(input);
@@ -124,6 +129,17 @@ const App: React.FC = () => {
   }
 
 
+  
+  const agregar_memoria = () => {
+    const variable_aux = /-?\d+(\.\d+)?/;
+    const encontro_result = variable_aux.exec(input);
+    if (encontro_result) {
+      const numero = parseFloat(encontro_result[0]);
+      setMemoria([...memoria, numero]);
+    }else if (input.trim() === '') {
+      setMemoria([...memoria, 0]);
+    }
+  };
 
   const calcularResultado = (valor_aux: string) => {
     if (input) {
@@ -153,6 +169,27 @@ const App: React.FC = () => {
       addToHistorial(evaluate(valor_aux));
     }
   }
+
+  const memory_add = () => {
+    const aux_variable = /-?\d+(\.\d+)?/;
+    const encontrar_variable = aux_variable.exec(input);
+    if (encontrar_variable) {
+      const numero = parseFloat(encontrar_variable[0]);
+      memoria[memoria.length - 1] += numero;
+      setMemoria([...memoria]);
+    }
+  };
+
+  const memory_sub = () => {
+    const aux_variable = /-?\d+(\.\d+)?/;
+    const econtrar_variable = aux_variable.exec(input);
+    if (econtrar_variable) {
+      const numero = parseFloat(econtrar_variable[0]);
+      memoria[memoria.length - 1] -= numero;
+      setMemoria([...memoria]);
+    }
+  };
+
 
   const modal = useRef<HTMLIonModalElement>(null);
   const modal1 = useRef<HTMLIonModalElement>(null);
@@ -185,12 +222,28 @@ const App: React.FC = () => {
 
   const handleClick1 = () => {
     setButtonEnabled(false);
+
+  }
+
+  const botonClick1 = () => {
+    handleClick1();
+    clearMemory();
+
+  }
+
+  const botonClick2 = () => {
+    handleClick();
+    agregar_memoria();
+    
+
   }
 
   const clearHist = ()  => {
     setHistorial([]);
   } 
 
+
+  
 
   return (
     <IonApp>
@@ -271,10 +324,15 @@ const App: React.FC = () => {
             </IonHeader>
             <IonContent color="#1f1f1">
               <IonList>
+              {memoria.map((numero, index) => (
+                  <IonItem key={index}>
+                    <IonLabel>
+                      <h2>{numero}</h2>
+                    </IonLabel>
+                  </IonItem>
+                ))}
                 <IonItem>
                   <IonLabel>
-                    <h2>x</h2>
-                    <p>y</p>
                   </IonLabel>
                 </IonItem>
               </IonList>
@@ -301,12 +359,12 @@ const App: React.FC = () => {
               </div>
               <Pantalla input={input} />
               <div className='fila'>
-              <IonButton  disabled={!buttonEnabled} onClick={handleClick1} color="#1c1c1c" >MC</IonButton>
-                <IonButton  disabled={!buttonEnabled}  color="#1c1c1c" >MR</IonButton>
-                <IonButton color="#1c1c1c" >M+</IonButton>
-                <IonButton color="#1c1c1c" >M-</IonButton>
-                <IonButton color="#1c1c1c" onClick={handleClick} >MS</IonButton>
-                <IonButton  disabled={!buttonEnabled}  color="#1c1c1c" id="open-memoria" expand="block">M↓</IonButton>
+                 <IonButton  disabled={!buttonEnabled} onClick={botonClick1} color="#1c1c1c" >MC</IonButton>
+                <IonButton  disabled={!buttonEnabled}  onClick={memory_recall}  color="#1c1c1c" >MR</IonButton>
+                <IonButton color="#1c1c1c" onClick={memory_add} >M+</IonButton>
+                <IonButton color="#1c1c1c"  onClick={memory_sub} >M-</IonButton>
+                <IonButton color="#1c1c1c" onClick={botonClick2} >MS</IonButton>
+                <IonButton  disabled={!buttonEnabled}   color="#1c1c1c" id="open-memoria" expand="block">M↓</IonButton>
               </div>
 
               <div className='fila'>
