@@ -11,6 +11,7 @@
 - Node.js 📚 
 - Línea de comando 👾 
 - Visual Studio Code 💻 
+- Fonst Awesome  👩‍💻
 ##
 ### 🟠FrameWorks🟠
 - Ionic 📃 
