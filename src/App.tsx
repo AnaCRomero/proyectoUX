@@ -3,7 +3,7 @@ import './App.css';
 import Pantalla from './components/Pantalla';
 import Boton from './components/Boton';
 import BotonClear from './components/BotonClear';
-import Memoria from './components/Memoria';
+
 
 import { useState, useRef, useEffect } from 'react';
 import { evaluate, sqrt } from 'mathjs';
@@ -14,9 +14,10 @@ import { evaluate, sqrt } from 'mathjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClockRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons'
-import { faBook} from '@fortawesome/free-solid-svg-icons'
+import { faBook } from '@fortawesome/free-solid-svg-icons'
 import { faChild } from '@fortawesome/free-solid-svg-icons'
-import { faPersonDress} from '@fortawesome/free-solid-svg-icons'
+import { faPersonDress } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -44,22 +45,17 @@ setupIonicReact();
 
 const App: React.FC = () => {
 
-
   const [input, setInput] = useState('');
   const [historial, setHistorial] = useState<string[]>([]);
-  const [memoria, setMemoria] = useState<number[]>([]);
+  const [memoria_var, setMemoria] = useState<number[]>([]);
   const [buttonEnabled, setButtonEnabled] = useState(false);
 
 
-  const agregarInput = (val: string) => {
+  const agregar_Input = (val: string) => {
     setInput(input + val);
   }
 
-
-
-
-
-  const addToHistorial = (valor: string) => {
+  const agregar_historial = (valor: string) => {
     setHistorial(prevHistorial => [...prevHistorial, valor]);
   }
 
@@ -73,16 +69,16 @@ const App: React.FC = () => {
   }
 
   const memory_recall = () => {
-    const index = memoria.length - 1;
-    if (memoria.length === 0 || index < 0 || index >= memoria.length) {
+    const index = memoria_var.length - 1;
+    if (memoria_var.length === 0 || index < 0 || index >= memoria_var.length) {
       setInput('0');
     } else {
-      setInput(memoria[index].toString());
+      setInput(memoria_var[index].toString());
     }
   };
 
 
-  const clearMemory = () => {
+  const liberar_memoria = () => {
     setMemoria([]);
   }
 
@@ -92,8 +88,8 @@ const App: React.FC = () => {
     const calc_percentage = numero_aux / 100;
     const string_aux = calc_percentage.toString();
     setInput(`${calc_percentage}`);
-    addToHistorial(input);
-    addToHistorial(string_aux);
+    agregar_historial(input);
+    agregar_historial(string_aux);
   }
 
 
@@ -102,8 +98,8 @@ const App: React.FC = () => {
     const calc_result = numero_aux ** 2;
     const string_aux = calc_result.toString();
     setInput(`${calc_result} `);
-    addToHistorial(input);
-    addToHistorial(string_aux);
+    agregar_historial(input);
+    agregar_historial(string_aux);
   }
 
   const calc_raiz_cuadrada = () => {
@@ -111,8 +107,8 @@ const App: React.FC = () => {
     const calc_result = Math.sqrt(numero_aux);
     const string_aux = calc_result.toString();
     setInput(`${calc_result} `);
-    addToHistorial(input);
-    addToHistorial(string_aux);
+    agregar_historial(input);
+    agregar_historial(string_aux);
   }
 
   const calc_inversa = () => {
@@ -120,24 +116,36 @@ const App: React.FC = () => {
     const calc_result = 1 / numero_aux;
     const string_aux = calc_result.toString();
     setInput(`${calc_result} `);
-    addToHistorial(input);
-    addToHistorial(string_aux);
+    agregar_historial(input);
+    agregar_historial(string_aux);
   }
+
+
 
   const hacer_backspace = () => {
     setInput(prev => prev.slice(0, -1));
   }
 
 
-  
+
   const agregar_memoria = () => {
     const variable_aux = /-?\d+(\.\d+)?/;
     const encontro_result = variable_aux.exec(input);
     if (encontro_result) {
       const numero = parseFloat(encontro_result[0]);
-      setMemoria([...memoria, numero]);
-    }else if (input.trim() === '') {
-      setMemoria([...memoria, 0]);
+      setMemoria([...memoria_var, numero]);
+    } else if (input.trim() === '') {
+      setMemoria([...memoria_var, 0]);
+    }
+  };
+
+  const memory_sumar = () => {
+    const aux_variable = /-?\d+(\.\d+)?/;
+    const encontrar_variable = aux_variable.exec(input);
+    if (encontrar_variable) {
+      const numero = parseFloat(encontrar_variable[0]);
+      memoria_var[memoria_var.length - 1] += numero;
+      setMemoria([...memoria_var]);
     }
   };
 
@@ -155,40 +163,33 @@ const App: React.FC = () => {
       }
 
       if (input.includes("+")) {
-      
+
         setInput(valor_aux);
       }
 
       if (input.includes("-")) {
-       
+
         setInput(valor_aux);
       }
 
       setInput(evaluate(valor_aux));
-      addToHistorial(input);
-      addToHistorial(evaluate(valor_aux));
+      agregar_historial(input);
+      agregar_historial(evaluate(valor_aux));
     }
   }
 
-  const memory_add = () => {
-    const aux_variable = /-?\d+(\.\d+)?/;
-    const encontrar_variable = aux_variable.exec(input);
-    if (encontrar_variable) {
-      const numero = parseFloat(encontrar_variable[0]);
-      memoria[memoria.length - 1] += numero;
-      setMemoria([...memoria]);
-    }
-  };
 
-  const memory_sub = () => {
+
+  const memory_restar = () => {
     const aux_variable = /-?\d+(\.\d+)?/;
     const econtrar_variable = aux_variable.exec(input);
     if (econtrar_variable) {
       const numero = parseFloat(econtrar_variable[0]);
-      memoria[memoria.length - 1] -= numero;
-      setMemoria([...memoria]);
+      memoria_var[memoria_var.length - 1] -= numero;
+      setMemoria([...memoria_var]);
     }
   };
+
 
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -227,23 +228,23 @@ const App: React.FC = () => {
 
   const botonClick1 = () => {
     handleClick1();
-    clearMemory();
+    liberar_memoria();
 
   }
 
   const botonClick2 = () => {
     handleClick();
     agregar_memoria();
-    
+
 
   }
 
-  const clearHist = ()  => {
+  const borrar_historial = () => {
     setHistorial([]);
-  } 
+  }
 
 
-  
+
 
   return (
     <IonApp>
@@ -263,17 +264,17 @@ const App: React.FC = () => {
               <IonList>
                 <IonItem>
                   <IonLabel>
-                  <div id="container">
-                    <FontAwesomeIcon icon={faBook} />
-                    <p id="titulo1">Proyecto de UX</p>
-                    <FontAwesomeIcon icon={faBook} />
-                    <p id="titulo2">Elaborado por:</p>
-                    <FontAwesomeIcon icon={faPersonDress} />
-                    <p id="titulo2">Ana Romero - 11941043</p>
-                    <FontAwesomeIcon icon={faChild} />
-                    <p id="titulo2">Victor Cruz - 12011231</p> 
-                  </div>
-                  <p>Creado el 26-03-2023</p>
+                    <div id="container">
+                      <FontAwesomeIcon icon={faBook} />
+                      <p id="titulo1">Proyecto de UX</p>
+                      <FontAwesomeIcon icon={faBook} />
+                      <p id="titulo2">Elaborado por:</p>
+                      <FontAwesomeIcon icon={faPersonDress} />
+                      <p id="titulo2">Ana Romero - 11941043</p>
+                      <FontAwesomeIcon icon={faChild} />
+                      <p id="titulo2">Victor Cruz - 12011231</p>
+                    </div>
+                    <p>Creado el 26-03-2023</p>
                   </IonLabel>
                 </IonItem>
               </IonList>
@@ -286,32 +287,33 @@ const App: React.FC = () => {
               <IonToolbar color="#1f1f1">
                 <IonTitle >Historial Calculadora</IonTitle>
                 <IonButton slot="end" onClick={handleCloseModal2}>X</IonButton>
-                <IonButton slot="end" onClick={clearHist}>GB</IonButton>
+                <IonButton slot="end" onClick={borrar_historial}>
+                  <FontAwesomeIcon icon={faTrashCan} size="lg" />
+                  <IonIcon name="time" ></IonIcon> </IonButton>
               </IonToolbar>
             </IonHeader>
             <IonContent color="#1f1f1">
-            <IonList>
+              <IonList>
                 {historial.map((item, index) => {
                   if (index % 2 === 0) {
                     const nextItem = historial[index + 1];
                     return (
                       <IonItem key={index}>
                         <IonLabel>
-                          <p>{`${item} = `}</p>
-                          <h2>{nextItem}</h2>
+                          <p>{index / 2 + 1}. {`${item} = `}</p>
+                          <h2><strong>{nextItem}</strong></h2>
                         </IonLabel>
                       </IonItem>
                     );
                   }
                   return null;
                 })}
-             
-              <IonItem>
+                <IonItem>
                   <IonLabel>
-                   
+
                   </IonLabel>
                 </IonItem>
-                </IonList>
+              </IonList>
             </IonContent>
           </IonModal>
 
@@ -324,10 +326,10 @@ const App: React.FC = () => {
             </IonHeader>
             <IonContent color="#1f1f1">
               <IonList>
-              {memoria.map((numero, index) => (
+                {memoria_var.map((numero, index) => (
                   <IonItem key={index}>
                     <IonLabel>
-                      <h2>{numero}</h2>
+                      <h2>{index + 1}. {numero}</h2>
                     </IonLabel>
                   </IonItem>
                 ))}
@@ -359,12 +361,12 @@ const App: React.FC = () => {
               </div>
               <Pantalla input={input} />
               <div className='fila'>
-                 <IonButton  disabled={!buttonEnabled} onClick={botonClick1} color="#1c1c1c" >MC</IonButton>
-                <IonButton  disabled={!buttonEnabled}  onClick={memory_recall}  color="#1c1c1c" >MR</IonButton>
-                <IonButton color="#1c1c1c" onClick={memory_add} >M+</IonButton>
-                <IonButton color="#1c1c1c"  onClick={memory_sub} >M-</IonButton>
+                <IonButton disabled={!buttonEnabled} onClick={botonClick1} color="#1c1c1c" >MC</IonButton>
+                <IonButton disabled={!buttonEnabled} onClick={memory_recall} color="#1c1c1c" >MR</IonButton>
+                <IonButton color="#1c1c1c" onClick={memory_sumar} >M+</IonButton>
+                <IonButton color="#1c1c1c" onClick={memory_restar} >M-</IonButton>
                 <IonButton color="#1c1c1c" onClick={botonClick2} >MS</IonButton>
-                <IonButton  disabled={!buttonEnabled}   color="#1c1c1c" id="open-memoria" expand="block">M↓</IonButton>
+                <IonButton disabled={!buttonEnabled} color="#1c1c1c" id="open-memoria" expand="block">M↓</IonButton>
               </div>
 
               <div className='fila'>
@@ -378,34 +380,34 @@ const App: React.FC = () => {
                 <Boton manejarClic={calc_inversa}>1/𝒙</Boton>
                 <Boton manejarClic={calcular_cuadrado}>𝒙²</Boton>
                 <Boton manejarClic={calc_raiz_cuadrada}>²√𝒙</Boton>
-                <Boton manejarClic={agregarInput}>÷</Boton>
+                <Boton manejarClic={agregar_Input}>÷</Boton>
               </div>
 
               <div className='fila'>
-                <Boton manejarClic={agregarInput}>7</Boton>
-                <Boton manejarClic={agregarInput}>8</Boton>
-                <Boton manejarClic={agregarInput}>9</Boton>
-                <Boton manejarClic={agregarInput}>×</Boton>
+                <Boton manejarClic={agregar_Input}>7</Boton>
+                <Boton manejarClic={agregar_Input}>8</Boton>
+                <Boton manejarClic={agregar_Input}>9</Boton>
+                <Boton manejarClic={agregar_Input}>×</Boton>
               </div>
 
               <div className='fila'>
-                <Boton manejarClic={agregarInput}>4</Boton>
-                <Boton manejarClic={agregarInput}>5</Boton>
-                <Boton manejarClic={agregarInput}>6</Boton>
-                <Boton manejarClic={agregarInput}>-</Boton>
+                <Boton manejarClic={agregar_Input}>4</Boton>
+                <Boton manejarClic={agregar_Input}>5</Boton>
+                <Boton manejarClic={agregar_Input}>6</Boton>
+                <Boton manejarClic={agregar_Input}>-</Boton>
               </div>
 
               <div className='fila'>
-                <Boton manejarClic={agregarInput}>1</Boton>
-                <Boton manejarClic={agregarInput}>2</Boton>
-                <Boton manejarClic={agregarInput}>3</Boton>
-                <Boton manejarClic={agregarInput}>+</Boton>
+                <Boton manejarClic={agregar_Input}>1</Boton>
+                <Boton manejarClic={agregar_Input}>2</Boton>
+                <Boton manejarClic={agregar_Input}>3</Boton>
+                <Boton manejarClic={agregar_Input}>+</Boton>
               </div>
 
               <div className='fila'>
                 <Boton manejarClic={cambio_signo}>+/-</Boton>
-                <Boton manejarClic={agregarInput}>0</Boton>
-                <Boton manejarClic={agregarInput}>.</Boton>
+                <Boton manejarClic={agregar_Input}>0</Boton>
+                <Boton manejarClic={agregar_Input}>.</Boton>
                 <BotonIgual manejarClic={calcularResultado}>=</BotonIgual>
               </div>
 
